@@ -1,28 +1,43 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import PromoCard from "./components/PromoCard";
+import { connect } from "react-redux";
+import { action } from "./store/action";
 
 class App extends Component {
+  componentDidMount = e => {
+    this.props.action(this.props);
+  };
+
   render() {
+    const { promos } = this.props;
+    // console.log(this.props);
+
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div className="container">
+        <h4 className="red-text center">GET YOUR PROMO!</h4>
+
+        <div className="row">
+          <PromoCard promos={promos} />
+        </div>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  // console.log(state);
+  return {
+    promos: state.promos
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    action: promo => dispatch(action(promo))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
